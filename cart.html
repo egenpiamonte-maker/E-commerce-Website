@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Krusty Krab | Cart</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+
+        .receipt-overlay {
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.78);
+
+            display: none;
+
+            justify-content: center;
+            align-items: center;
+
+            z-index: 9999;
+
+            padding: 20px;
+        }
+
+        .receipt-overlay.show {
+            display: flex;
+        }
+
+
+        .receipt {
+            position: relative;
+
+            width: 420px;
+            max-width: 100%;
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: #fffaf2;
+            color: #171717;
+
+            padding: 35px 30px;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.55);
+
+            animation: receiptPop 0.25s ease;
+        }
+
+
+        @keyframes receiptPop {
+
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+        }
+
+
+        .receipt-close {
+            position: absolute;
+
+            top: 12px;
+            right: 15px;
+
+            width: 32px;
+            height: 32px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #eeeeee;
+
+            color: #555;
+
+            font-size: 22px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .receipt-close:hover {
+            background: #ff8c00;
+            color: white;
+        }
+
+        .receipt-top {
+            text-align: center;
+        }
+
+        .receipt-top h1 {
+            margin: 0;
+
+            font-size: 32px;
+            font-weight: 900;
+
+            letter-spacing: -1px;
+        }
+
+        .receipt-top h1 span {
+            color: #ff8c00;
+        }
+
+        .receipt-top p {
+            margin-top: 5px;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            color: #777;
+        }
+
+
+        .receipt-line {
+            border-top: 2px dashed #bbb;
+
+            margin: 20px 0;
+        }
+
+
+        .receipt-product {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin: 12px 0;
+        }
+
+        .receipt-product-name {
+            font-weight: 700;
+
+            font-size: 15px;
+        }
+
+        .receipt-product-qty {
+            color: #777;
+
+            font-size: 13px;
+
+            margin-top: 3px;
+        }
+
+        .receipt-product-price {
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .receipt-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin: 12px 0;
+
+            font-size: 14px;
+        }
+
+        .receipt-row.discount strong {
+            color: #20a64a;
+        }
+
+
+        .receipt-total {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 18px 0;
+        }
+
+        .receipt-total span {
+            font-size: 18px;
+
+            font-weight: 900;
+        }
+
+        .receipt-total strong {
+            font-size: 27px;
+
+            font-weight: 900;
+
+            color: #ff8c00;
+        }
+
+        .receipt-thankyou {
+            text-align: center;
+
+            margin: 20px 0;
+        }
+
+        .receipt-thankyou h3 {
+            margin-bottom: 5px;
+
+            font-size: 18px;
+        }
+
+        .receipt-thankyou p {
+            font-size: 12px;
+
+            color: #777;
+
+            line-height: 1.5;
+        }
+
+
+        .receipt-done {
+            width: 100%;
+
+            border: none;
+
+            background: #ff8c00;
+
+            color: #111;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            font-weight: 900;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .receipt-done:hover {
+            background: #ff9f2e;
+
+            transform: translateY(-2px);
+        }
+
+
+
+        @media (max-width: 500px) {
+
+            .receipt {
+                padding: 30px 20px;
+            }
+
+            .receipt-top h1 {
+                font-size: 28px;
+            }
+
+            .receipt-total strong {
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="navbar">
+
+        <a href="index.html" class="logo">
+    <img src="images/kkk.png" alt="The Krusty Krab Logo">
+    <span>The Krusty Krab</span>
+            </a>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="menu.html">
+                Menu
+            </a>
+
+            <a href="promos.html">
+                Promos
+            </a>
+
+            <a href="about.html">
+                About Us
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="cart.html" class="cart-link active">
+                🛒 Cart
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<main class="cart-page">
+
+
+
+    <section class="cart-header">
+
+        <p class="orange-text">
+            YOUR ORDER
+        </p>
+
+        <h1>
+            Shopping Cart
+        </h1>
+
+        <p>
+            Review your order before checking out.
+        </p>
+
+    </section>
+
+
+    <div class="cart-layout">
+
+        <section class="cart-items" id="cartItems">
+
+        </section>
+
+
+
+        <aside class="order-summary">
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            <!-- SUBTOTAL -->
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="subtotal">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row discount-row">
+
+                <span>
+                    Discount
+                </span>
+
+                <strong id="discount">
+                    -₱0.00
+                </strong>
+
+            </div>
+
+
+
+            <div class="discount-note">
+
+                🎓 Students, Senior Citizens, and PWD customers
+                can receive <strong>10% OFF</strong> with a valid ID.
+
+            </div>
+
+
+
+            <label class="discount-check">
+
+                <input type="checkbox" id="discountCheck">
+
+                <span>
+                    I am a Student / Senior Citizen / PWD
+                </span>
+
+            </label>
+
+            <div class="summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="total">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="checkout-btn"
+                onclick="checkout()">
+
+                CHECKOUT
+
+            </button>
+
+            <a
+                href="menu.html"
+                class="continue-shopping">
+
+                ← Continue Shopping
+
+            </a>
+
+        </aside>
+
+    </div>
+
+</main>
+
+<div
+    class="receipt-overlay"
+    id="receiptOverlay">
+
+
+    <div class="receipt">
+
+
+        <button
+            type="button"
+            class="receipt-close"
+            onclick="closeReceipt()">
+
+            ×
+
+        </button>
+
+
+        <div class="receipt-top">
+
+            <h1>
+                <span>The Krusty Krab</span>
+            </h1>
+
+            <p>
+                ORDER RECEIPT
+            </p>
+
+        </div>
+
+
+        <div class="receipt-line"></div>
+
+        <div id="receiptItems">
+
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <strong id="receiptSubtotal">
+                ₱0.00
+            </strong>
+
+        </div>
+
+
+        <div class="receipt-row discount">
+
+            <span>
+                Discount
+            </span>
+
+            <strong id="receiptDiscount">
+                -₱0.00
+            </strong>
+
+        </div>
+
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-total">
+
+            <span>
+                TOTAL
+            </span>
+
+            <strong id="receiptTotal">
+                ₱0.00
+            </strong>
+
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-thankyou">
+
+            <h3>
+                Thank you for ordering!
+            </h3>
+
+            <p>
+                Please present this receipt when claiming your order.
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            class="receipt-done"
+            onclick="closeReceipt()">
+
+            DONE
+
+        </button>
+
+
+    </div>
+
+</div>
+
+<footer>
+
+    <p>
+        © 2026 The Krusty Krab. All Rights Reserved.
+    </p>
+
+</footer>
+
+<script>
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("biteboxCart")
+    ) || [];
+
+function displayCart() {
+
+    const cartItems =
+        document.getElementById("cartItems");
+
+
+    cartItems.innerHTML = "";
+
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+
+            <div
+                class="cart-item"
+                style="
+                    display:block;
+                    text-align:center;
+                    padding:40px;
+                ">
+
+                <h2>
+                    Your cart is empty 🛒
+                </h2>
+
+                <p
+                    style="
+                        color:#888;
+                        margin:10px 0 20px;
+                    ">
+
+                    Choose something delicious
+                    from our menu.
+
+                </p>
+
+                <a
+                    href="menu.html"
+                    class="btn primary-btn">
+
+                    VIEW MENU
+
+                </a>
+
+            </div>
+
+        `;
+
+        updateCartTotal();
+
+        return;
+    }
+
+
+    cart.forEach(function(product, index) {
+
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "cart-item";
+
+
+        item.innerHTML = `
+
+            <div class="product-image">
+
+                <img
+                    src="${product.image}"
+                    alt="${product.name}">
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="category">
+                    ${product.category || "BITEBOX"}
+                </span>
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+                <p class="item-price">
+
+                    ₱${Number(product.price).toFixed(2)} each
+
+                </p>
+
+            </div>
+
+
+            <div class="quantity-box">
+
+                <button
+                    type="button"
+                    class="quantity-btn"
+                    onclick="decreaseQuantity(${index})">
+
+                    −
+
+                </button>
+
+
+                <span class="quantity">
+
+                    ${product.quantity}
+
+                </span>
+
+
+                <button
+                    type="button"
+                    class="quantity-btn"
+                    onclick="increaseQuantity(${index})">
+
+                    +
+
+                </button>
+
+            </div>
+
+
+            <strong class="item-total">
+
+                ₱${(
+                    Number(product.price) *
+                    Number(product.quantity)
+                ).toFixed(2)}
+
+            </strong>
+
+
+            <button
+                type="button"
+                class="remove-btn"
+                onclick="removeProduct(${index})">
+
+                Remove
+
+            </button>
+
+        `;
+
+
+        cartItems.appendChild(item);
+
+    });
+
+
+    updateCartTotal();
+
+}
+
+function increaseQuantity(index) {
+
+    cart[index].quantity++;
+
+    saveCart();
+
+}
+
+
+function decreaseQuantity(index) {
+
+    if (cart[index].quantity > 1) {
+
+        cart[index].quantity--;
+
+    } else {
+
+        cart.splice(index, 1);
+
+    }
+
+    saveCart();
+
+}
+
+function removeProduct(index) {
+
+    cart.splice(index, 1);
+
+    saveCart();
+
+}
+
+
+function saveCart() {
+
+    localStorage.setItem(
+        "biteboxCart",
+        JSON.stringify(cart)
+    );
+
+    displayCart();
+
+}
+
+
+function updateCartTotal() {
+
+    let subtotal = 0;
+
+
+    cart.forEach(function(product) {
+
+        subtotal +=
+            Number(product.price) *
+            Number(product.quantity);
+
+    });
+
+
+    document.getElementById("subtotal")
+        .textContent =
+        "₱" + subtotal.toFixed(2);
+
+
+
+    const discountCheck =
+        document.getElementById("discountCheck");
+
+
+    let discount = 0;
+
+
+    if (discountCheck.checked) {
+
+        discount =
+            subtotal * 0.10;
+
+    }
+
+
+    document.getElementById("discount")
+        .textContent =
+        "-₱" + discount.toFixed(2);
+
+
+
+    const total =
+        subtotal - discount;
+
+
+    document.getElementById("total")
+        .textContent =
+        "₱" + total.toFixed(2);
+
+}
+
+document
+    .getElementById("discountCheck")
+    .addEventListener(
+        "change",
+        updateCartTotal
+    );
+
+function checkout() {
+
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty!");
+
+        return;
+
+    }
+
+    const receiptItems =
+        document.getElementById("receiptItems");
+
+
+    receiptItems.innerHTML = "";
+
+
+    cart.forEach(function(product) {
+
+
+        const itemTotal =
+            Number(product.price) *
+            Number(product.quantity);
+
+
+        receiptItems.innerHTML += `
+
+            <div class="receipt-product">
+
+
+                <div>
+
+                    <div class="receipt-product-name">
+
+                        ${product.name}
+
+                    </div>
+
+
+                    <div class="receipt-product-qty">
+
+                        ${product.quantity}
+                        ×
+                        ₱${Number(product.price).toFixed(2)}
+
+                    </div>
+
+                </div>
+
+
+                <div class="receipt-product-price">
+
+                    ₱${itemTotal.toFixed(2)}
+
+                </div>
+
+
+            </div>
+
+        `;
+
+    });
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(function(product) {
+
+        subtotal +=
+            Number(product.price) *
+            Number(product.quantity);
+
+    });
+
+
+
+    const discountCheck =
+        document.getElementById("discountCheck");
+
+
+    let discount = 0;
+
+
+    if (discountCheck.checked) {
+
+        discount =
+            subtotal * 0.10;
+
+    }
+
+
+
+    const total =
+        subtotal - discount;
+
+
+
+    document.getElementById(
+        "receiptSubtotal"
+    ).textContent =
+        "₱" + subtotal.toFixed(2);
+
+
+    document.getElementById(
+        "receiptDiscount"
+    ).textContent =
+        "-₱" + discount.toFixed(2);
+
+
+    document.getElementById(
+        "receiptTotal"
+    ).textContent =
+        "₱" + total.toFixed(2);
+
+
+
+    document
+        .getElementById("receiptOverlay")
+        .classList.add("show");
+
+}
+
+
+function closeReceipt() {
+
+    document
+        .getElementById("receiptOverlay")
+        .classList.remove("show");
+
+}
+
+
+displayCart();
+
+</script>
+
+
+</body>
+
+</html>
